@@ -31,7 +31,7 @@ const Routing = () => {
       <Route exact path="/users" component={User.list} />
       <Route exact path="/users/:page" component={User.list} />
 
-      <Route exact path="/blog/:slug" component={Blog.detail} />
+      <Route exact path="/blog/:id" component={Blog.detail} />
       <Route exact path="/list" component={Blog.list} />
 
       <Route path="*" component={NoPage.detail} />
