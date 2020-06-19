@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Link, withRouter } from 'react-router-dom'
-import { withStore, EmptyTemplate } from 'freenit'
+import React from "react";
+import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import { withStore, EmptyTemplate } from "freenit";
 
 // Components
 import {
@@ -12,60 +12,58 @@ import {
   MenuItem,
   Toolbar,
   Typography,
-} from '@material-ui/core'
+} from "@material-ui/core";
 
 // Icons
-import CloseIcon from '@material-ui/icons/Clear'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import LoginIcon from '@material-ui/icons/Input'
-import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
-import ProfileIcon from '@material-ui/icons/AccountCircle'
-import MenuIcon from '@material-ui/icons/Menu'
-import RoleIcon from '@material-ui/icons/People'
-import UserIcon from '@material-ui/icons/PeopleOutline'
+import CloseIcon from "@material-ui/icons/Clear";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import LoginIcon from "@material-ui/icons/Input";
+import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
+import ProfileIcon from "@material-ui/icons/AccountCircle";
+import MenuIcon from "@material-ui/icons/Menu";
+import RoleIcon from "@material-ui/icons/People";
+import UserIcon from "@material-ui/icons/PeopleOutline";
 
-import styles from './styles'
-
+import styles from "./styles";
 
 class Template extends React.Component {
   state = {
     showMenu: false,
-  }
+  };
 
   handleLogout = async () => {
-    const { auth  } = this.props.store
-    const response = await auth.logout()
+    const { auth } = this.props.store;
+    const response = await auth.logout();
     if (response.ok === undefined) {
-      this.props.history.push('/')
+      this.props.history.push("/");
     }
-  }
+  };
 
   handleMenuOpen = () => {
-    this.setState({ showMenu: true })
-  }
+    this.setState({ showMenu: true });
+  };
 
   handleMenuClose = () => {
-    this.setState({ showMenu: false })
-  }
+    this.setState({ showMenu: false });
+  };
 
   render() {
-    const { auth, profile, resolution } = this.props.store
+    const { auth, profile, resolution } = this.props.store;
     const AnonButton = (
       <Link to="/login" style={styles.login}>
         <IconButton color="inherit">
           <LoginIcon />
         </IconButton>
       </Link>
-    )
+    );
     const LoggedinButton = (
       <IconButton color="inherit" onClick={this.handleLogout}>
         <LogoutIcon />
       </IconButton>
-    )
-    const AuthButton = auth.detail.ok ? LoggedinButton : AnonButton
+    );
+    const AuthButton = auth.detail.ok ? LoggedinButton : AnonButton;
     const AdminMenu = profile.detail.admin
       ? [
-        (
           <Link to="/dashboard" key="dashboard">
             <MenuItem>
               <ListItemIcon>
@@ -73,9 +71,7 @@ class Template extends React.Component {
               </ListItemIcon>
               Dashboard
             </MenuItem>
-          </Link>
-        ),
-        (
+          </Link>,
           <Link to="/users" key="users">
             <MenuItem>
               <ListItemIcon>
@@ -83,9 +79,7 @@ class Template extends React.Component {
               </ListItemIcon>
               Users
             </MenuItem>
-          </Link>
-        ),
-        (
+          </Link>,
           <Link to="/roles" key="roles">
             <MenuItem>
               <ListItemIcon>
@@ -93,30 +87,28 @@ class Template extends React.Component {
               </ListItemIcon>
               Roles
             </MenuItem>
-          </Link>
-        ),
-      ] : []
-    const LoggingMenu = auth.detail.ok
-      ? (
-        <MenuItem onClick={this.handleLogout}>
+          </Link>,
+        ]
+      : [];
+    const LoggingMenu = auth.detail.ok ? (
+      <MenuItem onClick={this.handleLogout}>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        Logout
+      </MenuItem>
+    ) : (
+      <Link to="/login">
+        <MenuItem>
           <ListItemIcon>
-            <LogoutIcon />
+            <LoginIcon />
           </ListItemIcon>
-          Logout
+          Login
         </MenuItem>
-      ) : (
-        <Link to="/login">
-          <MenuItem>
-            <ListItemIcon>
-              <LoginIcon />
-            </ListItemIcon>
-            Login
-          </MenuItem>
-        </Link>
-      )
+      </Link>
+    );
     const AuthMenu = auth.detail.ok
       ? [
-        (
           <Link to="/profile" key="profile">
             <MenuItem>
               <ListItemIcon>
@@ -124,17 +116,12 @@ class Template extends React.Component {
               </ListItemIcon>
               Profile
             </MenuItem>
-          </Link>
-        ),
-        ...AdminMenu,
-      ]
-      : null
-    const BarLinks = resolution.detail.width > 410
-      ? (
-        <div>
-          {AuthButton}
-        </div>
-      ) : null
+          </Link>,
+          ...AdminMenu,
+        ]
+      : null;
+    const BarLinks =
+      resolution.detail.width > 410 ? <div>{AuthButton}</div> : null;
     return (
       <div>
         <AppBar position="static">
@@ -146,11 +133,24 @@ class Template extends React.Component {
               <Link to="/" data-id="app">
                 Freenit
               </Link>
+              <Link
+                to="/blog/:smug"
+                style={{ paddingLeft: "10px" }}
+                data-id="app"
+              >
+                Blog
+              </Link>
+              <Link to="/list" style={{ paddingLeft: "10px" }} data-id="app">
+                List
+              </Link>
             </Typography>
             {BarLinks}
           </Toolbar>
         </AppBar>
-        <EmptyTemplate.detail secure={this.props.secure} style={this.props.style}>
+        <EmptyTemplate.detail
+          secure={this.props.secure}
+          style={this.props.style}
+        >
           {this.props.children}
           <Drawer open={this.state.showMenu} onClose={this.handleMenuClose}>
             <AppBar position="static">
@@ -176,10 +176,9 @@ class Template extends React.Component {
           </Drawer>
         </EmptyTemplate.detail>
       </div>
-    )
+    );
   }
 }
-
 
 Template.propTypes = {
   children: PropTypes.node,
@@ -187,8 +186,6 @@ Template.propTypes = {
   secure: PropTypes.bool,
   style: PropTypes.shape({}),
   title: PropTypes.string,
-}
+};
 
-
-export default withRouter(withStore(Template))
-
+export default withRouter(withStore(Template));
