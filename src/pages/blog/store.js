@@ -10,7 +10,7 @@ export default class StoreFile {
     try {
       const response = await window.rest.get(`/blog/${slug}`);
       const data = {
-        ...response,
+        ...response.data,
         ok: true,
       };
       this.setDetail(data);
@@ -28,7 +28,7 @@ export default class StoreFile {
     try {
       const response = await window.rest.get("/list");
       const data = {
-        ...response,
+        ...response.data,
         ok: true,
       };
       this.setList(data);
