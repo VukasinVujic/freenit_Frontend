@@ -1,8 +1,24 @@
 import React from "react";
 import { Avatar, Select, MenuItem } from "@material-ui/core";
+import { withStore } from "freenit";
 
 class BlogDetail extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fetch();
+  }
+
+  fetch = async () => {
+    const { store, slug } = this.props;
+    const { blog, notification } = store;
+    const response = await store.blog.fetch(slug);
+    if (!response.ok) {
+      notification.show("Failed fetching blog detail");
+    }
+  };
+
   render() {
+    console.log(this.props.store.blog.detail);
     return (
       <div
         style={{ minHeight: "calc(100vh - 4px - 48px - 5px)", display: "flex" }}
@@ -48,4 +64,4 @@ class BlogDetail extends React.Component {
   }
 }
 
-export default BlogDetail;
+export default withStore(BlogDetail);

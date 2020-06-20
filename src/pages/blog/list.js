@@ -6,9 +6,25 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+import { withStore } from "freenit";
 
 class BlogList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fetchAll();
+  }
+
+  fetchAll = async () => {
+    const { store } = this.props;
+    const { list, notification } = store;
+    const response = await store.blog.fetchAll();
+    if (!response.ok) {
+      notification.show("Failed fetching blog list");
+    }
+  };
+
   render() {
+    console.log(this.props.store.blog.list);
     return (
       <div style={{ minHeight: "calc(100vh - 4px - 48px - 5px)" }}>
         <h2 style={{ textAlign: "center" }}>Tilda weekly classes</h2>
@@ -122,4 +138,4 @@ class BlogList extends React.Component {
   }
 }
 
-export default BlogList;
+export default withStore(BlogList);
